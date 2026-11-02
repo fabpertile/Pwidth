@@ -41,8 +41,6 @@ void PhaseWidthEditor::resetAll()
 
 PhaseWidthEditor::PhaseWidthEditor (PhaseWidthProcessor& p) : AudioProcessorEditor (&p), proc (p)
 {
-    setSize (1230, 800);
-
     styleLabel (title, "PHASE WIDTH 4   -   four-band dynamic stereo width / phase", 15.f);
     title.setColour (juce::Label::textColourId, juce::Colours::white);
     title.setBounds (kLeft, 8, 700, 24);
@@ -141,8 +139,8 @@ PhaseWidthEditor::PhaseWidthEditor (PhaseWidthProcessor& p) : AudioProcessorEdit
     masterReset.setBounds (mx, kTop + 392, 190, 30);
 
     gonioToggle.setToggleState (proc.gonioOn.load(), juce::dontSendNotification);
+    setSize (1230, 800);        // only now: setSize() calls resized(), which needs every control to exist
     startTimerHz (30);
-    resized();
 }
 
 PhaseWidthEditor::~PhaseWidthEditor() { stopTimer(); }
@@ -159,6 +157,9 @@ void PhaseWidthEditor::paint (juce::Graphics& g)
 
 void PhaseWidthEditor::resized()
 {
+    for (const auto& band : bands)
+        if (band == nullptr) return;                       // controls not created yet
+
     for (int b = 0; b < pw::kBands; ++b)
     {
         auto& u = *bands[(size_t) b];
