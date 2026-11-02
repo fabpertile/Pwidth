@@ -15,7 +15,7 @@ FetchContent_Declare(JUCE
 FetchContent_MakeAvailable(JUCE)
 
 juce_add_plugin(PhaseWidth4
-    COMPANY_NAME "PhaseWidth"
+    COMPANY_NAME "Fabio Pertile"
     PLUGIN_MANUFACTURER_CODE Pwdt
     PLUGIN_CODE Pw4b
     FORMATS VST3
